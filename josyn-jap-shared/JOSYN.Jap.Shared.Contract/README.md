@@ -89,7 +89,7 @@ PutError selbst fehlgeschlagen  →  LocalLog.Error(...)              (Fallback 
 
 ### Referenced by
 
-- `JOSYN.Jap.JobHost`
+- `JOSYN.JobHost`
 - `JOSYN.Jap.JAPServer`
 
 ### Projektstruktur

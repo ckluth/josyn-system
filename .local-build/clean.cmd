@@ -3,7 +3,7 @@ CHCP 1252
 setlocal
 
 set "NUGET_BASE=%USERPROFILE%\.nuget\packages"
-set PACKAGES=josyn.system.shared.contract josyn.system.shared.log
+set PACKAGES=josyn.jap.shared.contract josyn.jap.shared.log
 
 for %%P in (%PACKAGES%) do (
     if exist "%NUGET_BASE%\%%P" (
