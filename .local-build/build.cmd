@@ -18,10 +18,10 @@ if /i "%CONFIGURATION%" neq "Release" if /i "%CONFIGURATION%" neq "Debug" (
 
 set "ROOT=%~dp0.."
 
-call :run_build "josyn-system-shared"
+call :run_build "josyn-jap-shared"
 if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
-call :run_build "josyn-system-japserver"
+call :run_build "josyn-jap-japserver"
 if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
 echo.

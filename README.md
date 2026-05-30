@@ -9,9 +9,9 @@ gemeinsame Bibliotheken und ausführbare Prozesse des JOSYN-Systems.
 
 | Komponente | Typ | Rolle | Abhängigkeiten |
 |---|---|---|---|
-| [`JOSYN.System.Shared.Contract`](josyn-system-shared/) | NuGet | Applikationsvertrag (JAP) zwischen JobHost und JAPServer | ResultPattern |
-| [`JOSYN.System.Shared.Log`](josyn-system-shared/) | NuGet | Prozess-lokaler Datei-Logger für alle JOSYN-EXE-Prozesse | ResultPattern |
-| [`JOSYN.System.JAPServer`](josyn-system-japserver/) | Exe | Backend-Prozess — empfängt JAP-Anfragen via JIP, führt Jobs aus | JIP, PropertyBag, ResultPattern, Shared.Contract, Shared.Log |
+| [`JOSYN.Jap.Shared.Contract`](josyn-jap-shared/) | NuGet | Applikationsvertrag (JAP) zwischen JobHost und JAPServer | ResultPattern |
+| [`JOSYN.Jap.Shared.Log`](josyn-jap-shared/) | NuGet | Prozess-lokaler Datei-Logger für alle JOSYN-EXE-Prozesse | ResultPattern |
+| [`JOSYN.Jap.JAPServer`](josyn-jap-japserver/) | Exe | Backend-Prozess — empfängt JAP-Anfragen via JIP, führt Jobs aus | JIP, PropertyBag, ResultPattern, Shared.Contract, Shared.Log |
 
 ### Abhängigkeitskette
 
@@ -54,8 +54,8 @@ Oder über die Root-Skripte (alle Sub-Repos auf einmal):
 Reifer PoC — Milestone 1. Die Pakete sind intern produktionsreif;
 die `preview`-Kennzeichnung spiegelt den noch offenen Abnahme-Prozess wider.
 Bekannte PoC-Einschränkungen:
-- [`josyn-system-shared/POC-HACKS.md`](josyn-system-shared/POC-HACKS.md)
-- [`josyn-system-japserver/POC-HACKS.md`](josyn-system-japserver/POC-HACKS.md)
+- [`josyn-jap-shared/POC-HACKS.md`](josyn-jap-shared/POC-HACKS.md)
+- [`josyn-jap-japserver/POC-HACKS.md`](josyn-jap-japserver/POC-HACKS.md)
 
 ---
 

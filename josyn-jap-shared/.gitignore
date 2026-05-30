@@ -122,8 +122,8 @@ StyleCopReport.xml
 *_wpftmp.csproj
 *.log
 # JOSYN-specific: *.log also matches folder "JOSYN.Jap.Shared.Log" on Windows — re-include it
-!josyn-jap-shared/JOSYN.Jap.Shared.Log/
-!josyn-jap-shared/JOSYN.Jap.Shared.Log/**
+!JOSYN.Jap.Shared.Log/
+!JOSYN.Jap.Shared.Log/**
 *.tlog
 *.vspscc
 *.vssscc

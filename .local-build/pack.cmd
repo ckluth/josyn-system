@@ -8,7 +8,7 @@ setlocal
 
 set "ROOT=%~dp0.."
 
-call :run_pack "josyn-system-shared"
+call :run_pack "josyn-jap-shared"
 if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
 echo.
