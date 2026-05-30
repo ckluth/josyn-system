@@ -16,7 +16,7 @@ public static class LocalLog
     /// <inheritdoc cref="ILocalLog.WriteError(string, string?, string?)"/>
     public static void WriteError(string message, string? callStack = null, string? exceptionDetails = null)
     {
-        var entry = FormatEntry("ERROR", message, callStack, exceptionDetails);
+        var entry = FormatEntry(levelError, message, callStack, exceptionDetails);
         AppendEntry(LogDirectory, entry);
         if (EnableConsoleOutput)
             PrintEntry(entry, ConsoleColor.Red);
@@ -29,7 +29,7 @@ public static class LocalLog
     /// <inheritdoc cref="ILocalLog.WriteError(string, string, string?, string?)"/>
     public static void WriteError(string causer, string message, string? callStack = null, string? exceptionDetails = null)
     {
-        var entry = FormatEntry("ERROR", message, callStack, exceptionDetails);
+        var entry = FormatEntry(levelError, message, callStack, exceptionDetails);
         AppendEntry(Path.Combine(LogDirectory, causer), entry);
         if (EnableConsoleOutput)
             PrintEntry(entry, ConsoleColor.Red);
@@ -42,7 +42,7 @@ public static class LocalLog
     /// <inheritdoc cref="ILocalLog.WriteInfo(string)"/>
     public static void WriteInfo(string message)
     {
-        var entry = FormatEntry("INFO", message);
+        var entry = FormatEntry(levelInfo, message);
         AppendEntry(LogDirectory, entry);
         if (EnableConsoleOutput)
             PrintEntry(entry, ConsoleColor.Gray);
@@ -51,13 +51,16 @@ public static class LocalLog
     /// <inheritdoc cref="ILocalLog.WriteInfo(string, string)"/>
     public static void WriteInfo(string causer, string message)
     {
-        var entry = FormatEntry("INFO", message);
+        var entry = FormatEntry(levelInfo, message);
         AppendEntry(Path.Combine(LogDirectory, causer), entry);
         if (EnableConsoleOutput)
             PrintEntry(entry, ConsoleColor.Gray);
     }
 
     // -------------------------------------------------------------------------
+
+    private const string levelError = "ERROR";
+    private const string levelInfo  = "INFO";
 
     internal static string FormatEntry(string level, string message, string? callStack = null, string? exceptionDetails = null)
     {
