@@ -23,7 +23,7 @@ internal static class Host
             var sessionKey = PipesProtocol.ParseSessionKeyCLIArguments(args);
             if (sessionKey == Guid.Empty)
             {
-                LocalLog.Error("Keine IPC-Session-UID angegeben.");
+                LocalLog.WriteError("Keine IPC-Session-UID angegeben.");
                 return 1;
             }
 
@@ -31,7 +31,7 @@ internal static class Host
         }
         catch (Exception ex)
         {
-            LocalLog.Error("Unbehandelte Exception im Host.", exceptionDetails: ex.ToString());
+            LocalLog.WriteError("Unbehandelte Exception im Host.", exceptionDetails: ex.ToString());
             Console.WriteLine(ex);
             return 1;
         }
@@ -72,11 +72,11 @@ internal static class Host
         Console.WriteLine($"Finished after {sw.Elapsed}");
         if (!res.Succeeded)
         {
-            LocalLog.Error(res);
+            LocalLog.WriteError(res);
             return 1;
         }
 
-        LocalLog.Info("Server terminiert.");
+        LocalLog.WriteInfo("Server terminiert.");
         return 0;
     }
 
@@ -107,7 +107,7 @@ internal static class Host
 
     private static async Task HandleHandlerError(string request, Exception ex)
     {
-        LocalLog.Error($"Fehler beim Verarbeiten der Anfrage: {request}", exceptionDetails: ex.ToString());
+        LocalLog.WriteError($"Fehler beim Verarbeiten der Anfrage: {request}", exceptionDetails: ex.ToString());
         await Task.CompletedTask;
     }
 }

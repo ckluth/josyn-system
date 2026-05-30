@@ -40,41 +40,41 @@ public sealed class LocalLogTests
     // ── Format ────────────────────────────────────────────────────────────────
 
     [Test]
-    public void Error_ContainsErrorLevelHeader()
+    public void WriteError_ContainsErrorLevelHeader()
     {
-        LocalLog.Error("msg");
+        LocalLog.WriteError("msg");
 
         Assert.That(ReadLog(_testDir), Does.Contain("[ERROR]"));
     }
 
     [Test]
-    public void Info_ContainsInfoLevelHeader()
+    public void WriteInfo_ContainsInfoLevelHeader()
     {
-        LocalLog.Info("msg");
+        LocalLog.WriteInfo("msg");
 
         Assert.That(ReadLog(_testDir), Does.Contain("[INFO]"));
     }
 
     [Test]
-    public void Error_ContainsMessage()
+    public void WriteError_ContainsMessage()
     {
-        LocalLog.Error("Verbindung fehlgeschlagen.");
+        LocalLog.WriteError("Verbindung fehlgeschlagen.");
 
         Assert.That(ReadLog(_testDir), Does.Contain("Verbindung fehlgeschlagen."));
     }
 
     [Test]
-    public void Error_AlwaysContains80DashSeparator()
+    public void WriteError_AlwaysContains80DashSeparator()
     {
-        LocalLog.Error("msg");
+        LocalLog.WriteError("msg");
 
         Assert.That(ReadLog(_testDir), Does.Contain(new string('-', 80)));
     }
 
     [Test]
-    public void Error_WithCallStack_IncludesCallStackSection()
+    public void WriteError_WithCallStack_IncludesCallStackSection()
     {
-        LocalLog.Error("msg", callStack: "  at SomeClass.SomeMethod (File.cs:42)");
+        LocalLog.WriteError("msg", callStack: "  at SomeClass.SomeMethod (File.cs:42)");
 
         var content = ReadLog(_testDir);
         Assert.That(content, Does.Contain("--- CallStack ---"));
@@ -82,25 +82,25 @@ public sealed class LocalLogTests
     }
 
     [Test]
-    public void Error_WithoutCallStack_OmitsCallStackSection()
+    public void WriteError_WithoutCallStack_OmitsCallStackSection()
     {
-        LocalLog.Error("msg", callStack: null);
+        LocalLog.WriteError("msg", callStack: null);
 
         Assert.That(ReadLog(_testDir), Does.Not.Contain("--- CallStack ---"));
     }
 
     [Test]
-    public void Error_WithEmptyCallStack_OmitsCallStackSection()
+    public void WriteError_WithEmptyCallStack_OmitsCallStackSection()
     {
-        LocalLog.Error("msg", callStack: "");
+        LocalLog.WriteError("msg", callStack: "");
 
         Assert.That(ReadLog(_testDir), Does.Not.Contain("--- CallStack ---"));
     }
 
     [Test]
-    public void Error_WithExceptionDetails_IncludesExceptionSection()
+    public void WriteError_WithExceptionDetails_IncludesExceptionSection()
     {
-        LocalLog.Error("msg", exceptionDetails: "System.IO.IOException: Zugriff verweigert.");
+        LocalLog.WriteError("msg", exceptionDetails: "System.IO.IOException: Zugriff verweigert.");
 
         var content = ReadLog(_testDir);
         Assert.That(content, Does.Contain("--- Exception ---"));
@@ -108,9 +108,9 @@ public sealed class LocalLogTests
     }
 
     [Test]
-    public void Error_WithoutExceptionDetails_OmitsExceptionSection()
+    public void WriteError_WithoutExceptionDetails_OmitsExceptionSection()
     {
-        LocalLog.Error("msg", exceptionDetails: null);
+        LocalLog.WriteError("msg", exceptionDetails: null);
 
         Assert.That(ReadLog(_testDir), Does.Not.Contain("--- Exception ---"));
     }
@@ -118,44 +118,44 @@ public sealed class LocalLogTests
     // ── Routing ───────────────────────────────────────────────────────────────
 
     [Test]
-    public void Error_NoCauser_WritesToLogDirectoryRoot()
+    public void WriteError_NoCauser_WritesToLogDirectoryRoot()
     {
-        LocalLog.Error("msg");
+        LocalLog.WriteError("msg");
 
         Assert.That(File.Exists(TodaysLogFile(_testDir)), Is.True);
     }
 
     [Test]
-    public void Info_NoCauser_WritesToLogDirectoryRoot()
+    public void WriteInfo_NoCauser_WritesToLogDirectoryRoot()
     {
-        LocalLog.Info("msg");
+        LocalLog.WriteInfo("msg");
 
         Assert.That(File.Exists(TodaysLogFile(_testDir)), Is.True);
     }
 
     [Test]
-    public void Error_WithCauser_WritesToCauserSubdirectory()
+    public void WriteError_WithCauser_WritesToCauserSubdirectory()
     {
-        LocalLog.Error(causer: "JobHost", message: "msg");
+        LocalLog.WriteError(causer: "JobHost", message: "msg");
 
         Assert.That(File.Exists(TodaysLogFile(_testDir, "JobHost")), Is.True);
         Assert.That(File.Exists(TodaysLogFile(_testDir)), Is.False);
     }
 
     [Test]
-    public void Info_WithCauser_WritesToCauserSubdirectory()
+    public void WriteInfo_WithCauser_WritesToCauserSubdirectory()
     {
-        LocalLog.Info("JobHost", "msg");
+        LocalLog.WriteInfo("JobHost", "msg");
 
         Assert.That(File.Exists(TodaysLogFile(_testDir, "JobHost")), Is.True);
         Assert.That(File.Exists(TodaysLogFile(_testDir)), Is.False);
     }
 
     [Test]
-    public void Error_DifferentCausers_WriteToSeparateSubdirectories()
+    public void WriteError_DifferentCausers_WriteToSeparateSubdirectories()
     {
-        LocalLog.Error(causer: "ServiceA", message: "msg A");
-        LocalLog.Error(causer: "ServiceB", message: "msg B");
+        LocalLog.WriteError(causer: "ServiceA", message: "msg A");
+        LocalLog.WriteError(causer: "ServiceB", message: "msg B");
 
         Assert.That(ReadLog(_testDir, "ServiceA"), Does.Contain("msg A"));
         Assert.That(ReadLog(_testDir, "ServiceB"), Does.Contain("msg B"));
@@ -165,31 +165,31 @@ public sealed class LocalLogTests
     // ── Result overloads ──────────────────────────────────────────────────────
 
     [Test]
-    public void Error_FromResult_ContainsErrorMessage()
+    public void WriteError_FromResult_ContainsErrorMessage()
     {
         var result = Result.Fail("Datenbankverbindung unterbrochen.");
 
-        LocalLog.Error(result);
+        LocalLog.WriteError(result);
 
         Assert.That(ReadLog(_testDir), Does.Contain("Datenbankverbindung unterbrochen."));
     }
 
     [Test]
-    public void Error_FromResult_ContainsCallStack()
+    public void WriteError_FromResult_ContainsCallStack()
     {
         var result = Result.Fail("msg");
 
-        LocalLog.Error(result);
+        LocalLog.WriteError(result);
 
         Assert.That(ReadLog(_testDir), Does.Contain("--- CallStack ---"));
     }
 
     [Test]
-    public void Error_FromResult_WithException_ContainsExceptionSection()
+    public void WriteError_FromResult_WithException_ContainsExceptionSection()
     {
         Result result = Result.Fail("msg", new InvalidOperationException("Ungültiger Zustand."));
 
-        LocalLog.Error(result);
+        LocalLog.WriteError(result);
 
         var content = ReadLog(_testDir);
         Assert.That(content, Does.Contain("--- Exception ---"));
@@ -197,11 +197,11 @@ public sealed class LocalLogTests
     }
 
     [Test]
-    public void Error_WithCauser_FromResult_RoutesToSubdirectory()
+    public void WriteError_WithCauser_FromResult_RoutesToSubdirectory()
     {
         var result = Result.Fail("msg");
 
-        LocalLog.Error(causer: "JobHost", result: result);
+        LocalLog.WriteError(causer: "JobHost", result: result);
 
         Assert.That(File.Exists(TodaysLogFile(_testDir, "JobHost")), Is.True);
     }
@@ -209,25 +209,25 @@ public sealed class LocalLogTests
     // ── Resilience ────────────────────────────────────────────────────────────
 
     [Test]
-    public void Error_InvalidDirectory_DoesNotThrow()
+    public void WriteError_InvalidDirectory_DoesNotThrow()
     {
         LocalLog.LogDirectory = @"Z:\does\not\exist\at\all\";
 
-        Assert.DoesNotThrow(() => LocalLog.Error("msg"));
+        Assert.DoesNotThrow(() => LocalLog.WriteError("msg"));
     }
 
     [Test]
-    public void Info_InvalidDirectory_DoesNotThrow()
+    public void WriteInfo_InvalidDirectory_DoesNotThrow()
     {
         LocalLog.LogDirectory = @"Z:\does\not\exist\at\all\";
 
-        Assert.DoesNotThrow(() => LocalLog.Info("msg"));
+        Assert.DoesNotThrow(() => LocalLog.WriteInfo("msg"));
     }
 
     // ── Console output ────────────────────────────────────────────────────────
 
     [Test]
-    public void Error_WhenConsoleOutputEnabled_WritesToConsole()
+    public void WriteError_WhenConsoleOutputEnabled_WritesToConsole()
     {
         LocalLog.EnableConsoleOutput = true;
         var originalOut = Console.Out;
@@ -235,7 +235,7 @@ public sealed class LocalLogTests
         try
         {
             Console.SetOut(sw);
-            LocalLog.Error("Konsoleneintrag erwartet.");
+            LocalLog.WriteError("Konsoleneintrag erwartet.");
         }
         finally
         {
@@ -246,7 +246,7 @@ public sealed class LocalLogTests
     }
 
     [Test]
-    public void Error_WhenConsoleOutputDisabled_DoesNotWriteToConsole()
+    public void WriteError_WhenConsoleOutputDisabled_DoesNotWriteToConsole()
     {
         LocalLog.EnableConsoleOutput = false;
         var originalOut = Console.Out;
@@ -254,7 +254,7 @@ public sealed class LocalLogTests
         try
         {
             Console.SetOut(sw);
-            LocalLog.Error("Kein Konsoleneintrag.");
+            LocalLog.WriteError("Kein Konsoleneintrag.");
         }
         finally
         {

@@ -21,20 +21,20 @@ public interface ILocalLog
     static abstract bool EnableConsoleOutput { get; set; }
 
     /// <summary>Writes an error entry.</summary>
-    static abstract void Error(string message, string? callStack = null, string? exceptionDetails = null);
+    static abstract void WriteError(string message, string? callStack = null, string? exceptionDetails = null);
 
     /// <summary>Writes an error entry from a <see cref="Result"/>.</summary>
-    static abstract void Error(Result result);
+    static abstract void WriteError(Result result);
 
     /// <summary>Writes an error entry to the subdirectory of the specified causer.</summary>
-    static abstract void Error(string causer, string message, string? callStack = null, string? exceptionDetails = null);
+    static abstract void WriteError(string causer, string message, string? callStack = null, string? exceptionDetails = null);
 
     /// <summary>Writes an error entry from a <see cref="Result"/> to the subdirectory of the specified causer.</summary>
-    static abstract void Error(string causer, Result result);
+    static abstract void WriteError(string causer, Result result);
 
     /// <summary>Writes an info entry.</summary>
-    static abstract void Info(string message);
+    static abstract void WriteInfo(string message);
 
     /// <summary>Writes an info entry to the subdirectory of the specified causer.</summary>
-    static abstract void Info(string causer, string message);
+    static abstract void WriteInfo(string causer, string message);
 }

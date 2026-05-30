@@ -13,48 +13,48 @@ public static class LocalLog
     /// <inheritdoc cref="ILocalLog.EnableConsoleOutput"/>
     public static bool EnableConsoleOutput { get; set; } = false;
 
-    /// <inheritdoc cref="ILocalLog.Error(string, string?, string?)"/>
-    public static void Error(string message, string? callStack = null, string? exceptionDetails = null)
+    /// <inheritdoc cref="ILocalLog.WriteError(string, string?, string?)"/>
+    public static void WriteError(string message, string? callStack = null, string? exceptionDetails = null)
     {
         var entry = FormatEntry("ERROR", message, callStack, exceptionDetails);
-        WriteToFile(LogDirectory, entry);
+        AppendEntry(LogDirectory, entry);
         if (EnableConsoleOutput)
-            WriteToConsole(entry, ConsoleColor.Red);
+            PrintEntry(entry, ConsoleColor.Red);
     }
 
-    /// <inheritdoc cref="ILocalLog.Error(Result)"/>
-    public static void Error(Result result) =>
-        Error(result.ErrorMessage ?? string.Empty, result.CallStackAsString, result.Exception?.ToString());
+    /// <inheritdoc cref="ILocalLog.WriteError(Result)"/>
+    public static void WriteError(Result result) =>
+        WriteError(result.ErrorMessage ?? string.Empty, result.CallStackAsString, result.Exception?.ToString());
 
-    /// <inheritdoc cref="ILocalLog.Error(string, string, string?, string?)"/>
-    public static void Error(string causer, string message, string? callStack = null, string? exceptionDetails = null)
+    /// <inheritdoc cref="ILocalLog.WriteError(string, string, string?, string?)"/>
+    public static void WriteError(string causer, string message, string? callStack = null, string? exceptionDetails = null)
     {
         var entry = FormatEntry("ERROR", message, callStack, exceptionDetails);
-        WriteToFile(Path.Combine(LogDirectory, causer), entry);
+        AppendEntry(Path.Combine(LogDirectory, causer), entry);
         if (EnableConsoleOutput)
-            WriteToConsole(entry, ConsoleColor.Red);
+            PrintEntry(entry, ConsoleColor.Red);
     }
 
-    /// <inheritdoc cref="ILocalLog.Error(string, Result)"/>
-    public static void Error(string causer, Result result) =>
-        Error(causer, result.ErrorMessage ?? string.Empty, result.CallStackAsString, result.Exception?.ToString());
+    /// <inheritdoc cref="ILocalLog.WriteError(string, Result)"/>
+    public static void WriteError(string causer, Result result) =>
+        WriteError(causer, result.ErrorMessage ?? string.Empty, result.CallStackAsString, result.Exception?.ToString());
 
-    /// <inheritdoc cref="ILocalLog.Info(string)"/>
-    public static void Info(string message)
+    /// <inheritdoc cref="ILocalLog.WriteInfo(string)"/>
+    public static void WriteInfo(string message)
     {
         var entry = FormatEntry("INFO", message);
-        WriteToFile(LogDirectory, entry);
+        AppendEntry(LogDirectory, entry);
         if (EnableConsoleOutput)
-            WriteToConsole(entry, ConsoleColor.Gray);
+            PrintEntry(entry, ConsoleColor.Gray);
     }
 
-    /// <inheritdoc cref="ILocalLog.Info(string, string)"/>
-    public static void Info(string causer, string message)
+    /// <inheritdoc cref="ILocalLog.WriteInfo(string, string)"/>
+    public static void WriteInfo(string causer, string message)
     {
         var entry = FormatEntry("INFO", message);
-        WriteToFile(Path.Combine(LogDirectory, causer), entry);
+        AppendEntry(Path.Combine(LogDirectory, causer), entry);
         if (EnableConsoleOutput)
-            WriteToConsole(entry, ConsoleColor.Gray);
+            PrintEntry(entry, ConsoleColor.Gray);
     }
 
     // -------------------------------------------------------------------------
@@ -78,7 +78,7 @@ public static class LocalLog
         return sb.ToString();
     }
 
-    private static void WriteToFile(string directory, string entry)
+    private static void AppendEntry(string directory, string entry)
     {
         try
         {
@@ -92,7 +92,7 @@ public static class LocalLog
         }
     }
 
-    private static void WriteToConsole(string entry, ConsoleColor color)
+    private static void PrintEntry(string entry, ConsoleColor color)
     {
         Console.ForegroundColor = color;
         Console.Write(entry);

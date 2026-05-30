@@ -26,13 +26,13 @@ geschrieben (von `Core.cs` im JobHost und `Host.cs` im JAPServer standardmäßig
 
 ```csharp
 // Fehlereintrag — String-Variante
-LocalLog.Error("Verbindung fehlgeschlagen.", callStack: "...", exceptionDetails: "...");
+LocalLog.WriteError("Verbindung fehlgeschlagen.", callStack: "...", exceptionDetails: "...");
 
 // Fehlereintrag — Result-Variante (extrahiert Message, CallStack, Exception automatisch)
-LocalLog.Error(result);
+LocalLog.WriteError(result);
 
 // Info-Eintrag
-LocalLog.Info("Server terminiert.");
+LocalLog.WriteInfo("Server terminiert.");
 ```
 
 ---
@@ -55,9 +55,9 @@ Verbindung fehlgeschlagen.
 ## Fehlerrouting-Prinzip
 
 ```
-Pipe nicht erreichbar   →  LocalLog.Error(...)                     (nur lokal)
-Job-Fehler              →  LocalLog.Error(...) + PutError via JAP  (lokal + remote)
-PutError fehlgeschlagen →  LocalLog.Error(...) Fallback            (nur lokal)
+Pipe nicht erreichbar   →  LocalLog.WriteError(...)                     (nur lokal)
+Job-Fehler              →  LocalLog.WriteError(...) + PutError via JAP  (lokal + remote)
+PutError fehlgeschlagen →  LocalLog.WriteError(...) Fallback            (nur lokal)
 ```
 
 Der Logger ist nicht für das Routing selbst verantwortlich — das liegt im Aufrufer

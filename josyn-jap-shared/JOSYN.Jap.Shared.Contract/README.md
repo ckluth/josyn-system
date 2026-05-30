@@ -64,9 +64,9 @@ vorgesehen.
 ## Fehlerrouting im JobHost
 
 ```
-Pipe-Verbindungsfehler          →  LocalLog.Error(...)              (nur lokal)
-Job-Fehler, Pipe noch aktiv     →  LocalLog.Error(...) + PutError   (lokal + remote)
-PutError selbst fehlgeschlagen  →  LocalLog.Error(...)              (Fallback lokal)
+Pipe-Verbindungsfehler          →  LocalLog.WriteError(...)              (nur lokal)
+Job-Fehler, Pipe noch aktiv     →  LocalLog.WriteError(...) + PutError   (lokal + remote)
+PutError selbst fehlgeschlagen  →  LocalLog.WriteError(...)              (Fallback lokal)
 ```
 
 ---

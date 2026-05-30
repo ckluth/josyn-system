@@ -32,11 +32,11 @@ internal sealed class JAPServer : IJosynApplicationProtocol
         var deserialize = PropertyBag.Deserialize<ErrorReport>(serializedError);
         if (!deserialize.Succeeded)
         {
-            LocalLog.Error($"ErrorReport konnte nicht deserialisiert werden: {deserialize.ErrorMessage}\nRaw: {serializedError}");
+            LocalLog.WriteError($"ErrorReport konnte nicht deserialisiert werden: {deserialize.ErrorMessage}\nRaw: {serializedError}");
             return Result.Propagate(deserialize.ToResult());
         }
         var report = deserialize.Value;
-        LocalLog.Error(report.Causer, report.Message, report.CallStack, report.ExceptionDetails);
+        LocalLog.WriteError(report.Causer, report.Message, report.CallStack, report.ExceptionDetails);
         return await Task.FromResult(Result.Success);
     }
 
